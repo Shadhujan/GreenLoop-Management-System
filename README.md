@@ -21,6 +21,33 @@ The goal of this project is to practice Java desktop application development, ba
 
 ---
 
+## Screenshots
+### Application Header and Dashboard
+
+The application has a simple desktop dashboard with a GreenLoop header and three main tabs:
+
+Products | Clients | Inventory
+
+### Product Management Screen
+
+The Product Management screen allows the user to add, update, delete, search, and view packaging products.
+
+![Product Management Screen](screenshots/products.png)
+
+### Client Management Screen
+
+The Client Management screen allows the user to manage retail clients and their contact details.
+
+![Client Management Delete Screen](screenshots/clients.png)
+
+
+### Inventory Management Screen
+
+The Inventory Management screen allows the user to manage stock records and check low-stock items.
+
+![Inventory Management LowStock detaction Screen](screenshots/inventory.png)
+
+
 ## Features
 
 ### 1. Product Management
@@ -113,8 +140,13 @@ Stock status is calculated automatically:
 
 ```text
 GreenLoopManagementSystem/
+├── screenshots/
+│   ├── products.png
+│   ├── clients.png
+│   └── inventory.png
 │
 ├── pom.xml
+└── README.md
 │
 └── src/
     └── main/
@@ -122,6 +154,7 @@ GreenLoopManagementSystem/
             │
             ├── Main.java
             ├── MongoTest.java
+            ├── SeedData.java
             │
             ├── db/
             │   └── MongoConnection.java
@@ -283,7 +316,21 @@ The GreenLoop desktop window should open with three tabs:
 ```text
 Products | Clients | Inventory
 ```
+---
+## Insert Sample Data
 
+To insert sample data, run:
+
+```text
+src/main/java/SeedData.java
+```
+---
+## Test MongoDB Connection
+
+To test MongoDB connection, run:
+```text
+src/main/java/MongoTest.java
+```
 ---
 
 ## Maven Dependency
