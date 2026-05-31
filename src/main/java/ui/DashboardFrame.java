@@ -2,6 +2,7 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class DashboardFrame extends JFrame {
 
@@ -18,52 +19,11 @@ public class DashboardFrame extends JFrame {
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        mainPanel.add(createHeaderPanel(), BorderLayout.NORTH);
+        mainPanel.add(new HeaderPanel(), BorderLayout.NORTH);
         mainPanel.add(createTabbedPanel(), BorderLayout.CENTER);
 
         add(mainPanel);
         setVisible(true);
-    }
-
-    private JPanel createHeaderPanel() {
-        JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setPreferredSize(new Dimension(1200, 120));
-        headerPanel.setBackground(new Color(250, 255, 250));
-        headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(210, 220, 210)));
-
-        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 25, 25));
-        leftPanel.setOpaque(false);
-
-        JLabel logoLabel = new JLabel("♻");
-        logoLabel.setFont(new Font("Arial", Font.BOLD, 55));
-        logoLabel.setForeground(DARK_GREEN);
-
-        JPanel titlePanel = new JPanel(new GridLayout(2, 1));
-        titlePanel.setOpaque(false);
-
-        JLabel titleLabel = new JLabel("GreenLoop");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setForeground(DARK_GREEN);
-
-        JLabel subtitleLabel = new JLabel("Management System");
-        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-        subtitleLabel.setForeground(new Color(76, 145, 65));
-
-        titlePanel.add(titleLabel);
-        titlePanel.add(subtitleLabel);
-
-        leftPanel.add(logoLabel);
-        leftPanel.add(titlePanel);
-
-        JLabel rightLabel = new JLabel("Eco Packaging Management");
-        rightLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        rightLabel.setForeground(new Color(100, 120, 100));
-        rightLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 30));
-
-        headerPanel.add(leftPanel, BorderLayout.WEST);
-        headerPanel.add(rightLabel, BorderLayout.EAST);
-
-        return headerPanel;
     }
 
     private JTabbedPane createTabbedPanel() {
@@ -78,5 +38,65 @@ public class DashboardFrame extends JFrame {
         tabbedPane.addTab("Inventory", new InventoryPanel());
 
         return tabbedPane;
+    }
+
+    private class HeaderPanel extends JPanel {
+
+        private Image logoImage;
+        private Image leafImage;
+
+        public HeaderPanel() {
+            setPreferredSize(new Dimension(1200, 120));
+            setBackground(new Color(250, 255, 250));
+            setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(210, 220, 210)));
+
+            logoImage = loadImage("/images/greenloop_logo.png");
+            leafImage = loadImage("/images/greenloop_leaf.png");
+        }
+
+        private Image loadImage(String path) {
+            URL imageUrl = getClass().getResource(path);
+
+            if (imageUrl == null) {
+                System.out.println("Image not found: " + path);
+                return null;
+            }
+
+            return new ImageIcon(imageUrl).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Soft background
+            GradientPaint gradient = new GradientPaint(
+                    0, 0, Color.WHITE,
+                    getWidth(), getHeight(), new Color(245, 252, 245)
+            );
+            g2.setPaint(gradient);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            // Right leaf decoration
+            if (leafImage != null) {
+                g2.drawImage(leafImage, getWidth() - 330, -60, 330, 240, this);
+            }
+
+            // Left logo
+            if (logoImage != null) {
+                g2.drawImage(logoImage, 25, 25, 330, 75, this);
+            } else {
+                // fallback text if image is missing
+                g2.setColor(DARK_GREEN);
+                g2.setFont(new Font("Arial", Font.BOLD, 36));
+                g2.drawString("GreenLoop", 40, 55);
+
+                g2.setFont(new Font("Arial", Font.PLAIN, 20));
+                g2.drawString("Management System", 42, 85);
+            }
+        }
     }
 }
