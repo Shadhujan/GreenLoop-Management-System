@@ -80,10 +80,11 @@ public class ProductPanel extends JPanel {
 
         String[] columns = {"ID", "Name", "Category", "Price", "Eco Rating", "Description"};
 
-        Object[][] data = {
-                {"P001", "Biodegradable Food Wrap", "Wraps", "12.50", "5", "Plant-based food wrap"},
-                {"P002", "Recycled Cardboard Box", "Boxes", "8.75", "4", "Recycled cardboard box"},
-                {"P003", "Compostable Trash Bag", "Bags", "18.50", "5", "Compostable trash bags"}
+        tableModel = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
 
         DefaultTableModel model = new DefaultTableModel(data, columns);
